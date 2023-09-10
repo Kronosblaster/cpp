@@ -21,12 +21,15 @@ class Tree{
         Node* head;
         Node* error;
     public:
-        Tree():head(nullptr),error(nullptr){};
+        Tree():head(nullptr),error(new Node('X')){};
         Tree(Node* headNode): head(headNode), error(new Node('X')) {};
 
         Node* getNode(int depth,int index){
             Node* current=head;
             index=(int)pow(2,depth)-index-1;
+            if(index<0){
+                return error;
+            }
             bool switcher=0;
             int temp_depth=0;
             while(depth-temp_depth){
@@ -45,11 +48,15 @@ class Tree{
                 }
                 temp_depth+=1;
             }
+
             return current;
             }
         
         
         int getDepth(){
+            if(head==nullptr){
+                return -1;
+            }
             Node*current=head;
             int depth=0;
             while((current->left)!=nullptr){
@@ -59,59 +66,30 @@ class Tree{
             return depth;
         }
 
-        void insert(Node* node){
-            int index=getEmpty();
-            int depth=getDepth();
-            Node* current=getNode(depth-1,index/2);
-            index=index%2;
-            if(index){
-                current->left=node;
-            }                       
-            else{
-                current->right=node;
-            }     
-        }
-        int getEmpty(){
+        Node* getEmpty(){
             int depth=getDepth();
             int index=0;
+            if(depth==-1){
+                return error;
+            }
             Node* current=head;
             while(current!=error){
                 current=getNode(depth,index);
-                index+=1;
+                index=index+1;
             }
-            return index;
+            index-=1;
+            std::cout<<index<<std::endl;
+            return getNode(depth,index);
             
         }
-        void display(){
-            int finalIndex=getEmpty();
-            int depth=getDepth();
-            int i;
-            for(int j=0;j<=depth;j++){
-  
-            if(j!=depth){
-                i=0;
-                while(i<(int)pow(2,j)){
-                    std::cout<<getNode(j,i)->data;
-                    i+=1;
-                }
-            }
-            else{
-                i=0;
-                while(i<finalIndex-1){
-                    std::cout<<getNode(j,i)->data;
-                    i+=1;
-                }
-            }
-            std::cout<<std::endl;
-            }
-        }
+        //void display
+        //void insert
 };
 int main(){
     Node head('c');
     Node* headNode=&head;
-    Tree tree(headNode);
-    //tree.insert((new Node('a')));
-    std::cout<<tree.getDepth();
-    //tree.display();
+    Tree tree(&head);
+    std::cout<<tree.getDepth()<<std::endl;
+    std::cout<<(tree.getEmpty())->data;
 
 }
