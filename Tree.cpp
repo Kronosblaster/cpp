@@ -66,11 +66,11 @@ class Tree{
             return depth;
         }
 
-        Node* getEmpty(){
+        Node** getEmpty(){
             int depth=getDepth();
             int index=0;
             if(depth==-1){
-                return error;
+                return &head;
             }
             Node* current=head;
             while(current!=error){
@@ -78,8 +78,25 @@ class Tree{
                 index=index+1;
             }
             index-=1;
-            std::cout<<index<<std::endl;
-            return getNode(depth,index);
+            if(index==(int)pow(2,depth)){
+                index=0;
+                current=getNode(depth,index);
+                return &(current->left);
+            }
+
+            bool switcher=false;
+            if(index%2==0)
+                switcher=true;
+            else
+                switcher=false;
+            depth-=1;
+            index=index/2;
+            
+            current=getNode(depth,index);
+            if(switcher)
+                return &(current->left);
+            else
+                return &(current->right);
             
         }
         //void display
@@ -87,9 +104,12 @@ class Tree{
 };
 int main(){
     Node head('c');
+    Node a('a');
+    Node b('b');
+    head.left=&a;
     Node* headNode=&head;
     Tree tree(&head);
     std::cout<<tree.getDepth()<<std::endl;
-    std::cout<<(tree.getEmpty())->data;
-
+    std::cout<<((tree.getEmpty()))<<std::endl;
+    std::cout<<&(head.right);
 }
