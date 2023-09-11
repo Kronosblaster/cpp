@@ -99,8 +99,10 @@ class Tree{
                 return &(current->right);
             
         }
-        //void display
-        //void insert
+        void insert(Node node){
+            Node** current=getEmpty();
+            *current=&node;
+        }
 };
 int main(){
     Node head('c');
@@ -111,5 +113,6 @@ int main(){
     Tree tree(&head);
     std::cout<<tree.getDepth()<<std::endl;
     std::cout<<((tree.getEmpty()))<<std::endl;
-    std::cout<<&(head.right);
+    tree.insert(b);
+    std::cout<<(head.right)->data;
 }
