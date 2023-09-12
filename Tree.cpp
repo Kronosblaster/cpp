@@ -103,6 +103,23 @@ class Tree{
             Node** current=getEmpty();
             *current=&node;
         }
+        std::string getData(){
+            std::string word;
+            Node* current=head;
+            int depth=getDepth();
+            for(int i=0;i<=depth;i++){
+                for(int j=0;j<(int)pow(2,i);j++){
+                    current=getNode(i,j);
+                    if(current==error){
+                        break;
+                    }
+                    else{
+                        word+=current->data;
+                    }
+                }
+            }
+            return word;
+        }
 };
 int main(){
     Node head('c');
@@ -111,8 +128,6 @@ int main(){
     head.left=&a;
     Node* headNode=&head;
     Tree tree(&head);
-    std::cout<<tree.getDepth()<<std::endl;
-    std::cout<<((tree.getEmpty()))<<std::endl;
     tree.insert(b);
-    std::cout<<(head.right)->data;
+    std::cout<<tree.getData();
 }
